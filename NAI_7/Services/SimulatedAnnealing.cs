@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-using Microsoft.VisualBasic;
-using NAI_7.Models;
+﻿using NAI_7.Models;
 
 namespace NAI_7.Services;
 
@@ -26,8 +24,9 @@ public class SimulatedAnnealing
             if (WeightOf(candidate) > _settings.KnapsackCapacity) continue;
 
             Console.WriteLine($"k={k} t={currentTemp}");
-            Console.WriteLine($"best={string.Join("", best.Select(b => b ? "1" : "0"))}");
-            Console.WriteLine($"current={string.Join("", current.Select(b => b ? "1" : "0"))} candidate={string.Join("", candidate.Select(b => b ? "1" : "0"))}");
+            Console.WriteLine($"best={string.Join("", best.Select(b => b ? "1" : "0"))}, value={ValueOf(best)}, weight={WeightOf(best)}");
+            Console.WriteLine($"best={string.Join("", current.Select(b => b ? "1" : "0"))}, value={ValueOf(current)}, weight={WeightOf(current)}");
+            Console.WriteLine($"best={string.Join("", candidate.Select(b => b ? "1" : "0"))}, value={ValueOf(candidate)}, weight={WeightOf(candidate)}");
             
             current = IsBetter(current, candidate) ? candidate : SwapWithProbability(current, candidate, currentTemp);
             
@@ -44,10 +43,8 @@ public class SimulatedAnnealing
     private List<bool> SwapWithProbability(List<bool> current, List<bool> candidate, decimal currentTemp)
     {
         var rand = new Random();
-        // Console.WriteLine($"{ValueOf(current)}, {ValueOf(candidate)}");
         var p = Math.Pow(Math.E, (double)(-1*(Math.Abs(ValueOf(current) - ValueOf(candidate)) / currentTemp)));
         var q = rand.NextDouble();
-        // Console.WriteLine($"{q} : {p} - {(q > p ? "swap":"noswap")}");
         return q > p ? current : candidate;
     }
 

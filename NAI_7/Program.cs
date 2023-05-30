@@ -1,5 +1,4 @@
-﻿
-using NAI_7.Services;
+﻿using NAI_7.Services;
 
 var settings = Reader.Read(args[0]);
 var alg = new SimulatedAnnealing(settings);
